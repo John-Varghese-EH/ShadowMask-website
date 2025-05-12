@@ -6,41 +6,21 @@ const DemoSection = forwardRef<HTMLDivElement>((props, ref) => {
   const [step, setStep] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string>('https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=600');
-  const [protectedImage, setProtectedImage] = useState<string>('');
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const applyProtection = () => {
-    // Simulate image processing
-    setIsProcessing(true);
-    setTimeout(() => {
-      // In a real implementation, this would be replaced with actual image processing
-      setProtectedImage(selectedImage);
-      setIsProcessing(false);
-      setIsComplete(true);
-    }, 2000);
-  };
 
   const handleNextStep = () => {
     if (step === 3) {
-      applyProtection();
+      setIsProcessing(true);
+      setTimeout(() => {
+        setIsProcessing(false);
+        setIsComplete(true);
+      }, 2000);
     } else {
       setStep(step + 1);
     }
   };
 
   return (
-    <div ref={ref} className="py-24 bg-gray-950" id="demo">
+    <div ref={ref} className="py-24 bg-gray-950">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-4">See ShadowMask in Action</h2>
         <p className="text-gray-400 text-center max-w-2xl mx-auto mb-12">
@@ -48,6 +28,7 @@ const DemoSection = forwardRef<HTMLDivElement>((props, ref) => {
         </p>
 
         <div className="max-w-4xl mx-auto bg-gray-900 rounded-xl overflow-hidden shadow-xl border border-gray-800">
+          {/* Demo header */}
           <div className="bg-gray-800 p-4 flex items-center justify-between border-b border-gray-700">
             <div className="flex items-center space-x-2">
               <Shield className="h-5 w-5 text-purple-500" />
@@ -58,7 +39,9 @@ const DemoSection = forwardRef<HTMLDivElement>((props, ref) => {
             </div>
           </div>
 
+          {/* Demo content */}
           <div className="p-6">
+            {/* Steps indicator */}
             <div className="flex items-center mb-8">
               <div className={`flex items-center justify-center w-8 h-8 rounded-full ${step >= 1 ? 'bg-purple-600 text-white' : 'bg-gray-700 text-gray-400'}`}>
                 1
@@ -77,6 +60,7 @@ const DemoSection = forwardRef<HTMLDivElement>((props, ref) => {
               </div>
             </div>
 
+            {/* Step content */}
             <div className="min-h-64">
               {step === 1 && (
                 <div className="text-center">
@@ -91,18 +75,7 @@ const DemoSection = forwardRef<HTMLDivElement>((props, ref) => {
                   </p>
                   <div className="max-w-md mx-auto p-8 border-2 border-dashed border-gray-700 rounded-lg hover:border-purple-500 transition-colors">
                     <p className="text-gray-400">Drag & drop your image here or</p>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                      id="imageUpload"
-                    />
-                    <label htmlFor="imageUpload">
-                      <Button variant="outline" className="mt-3" as="span">
-                        Browse Files
-                      </Button>
-                    </label>
+                    <Button variant="outline" className="mt-3">Browse Files</Button>
                   </div>
                 </div>
               )}
@@ -155,23 +128,23 @@ const DemoSection = forwardRef<HTMLDivElement>((props, ref) => {
                       <p className="text-sm text-gray-400 mb-2">Original Image</p>
                       <div className="bg-gray-800 rounded-lg overflow-hidden">
                         <img 
-                          src={selectedImage}
+                          src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=600" 
                           alt="Original" 
                           className="w-full object-cover h-48"
                         />
                       </div>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-400 mb-2">Protected Preview</p>
-                      <div className="bg-gray-800 rounded-lg overflow-hidden relative">
+                      <p className="text-sm text-gray-400 mb-2">Protected Image</p>
+                      <div className="bg-gray-800 rounded-lg overflow-hidden">
                         <img 
-                          src={selectedImage}
+                          src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=600" 
                           alt="Protected" 
                           className="w-full object-cover h-48"
                         />
-                        <div className="absolute inset-0 bg-purple-500/10 flex items-center justify-center">
+                        <div className="absolute inset-0 bg-purple-500/10 flex items-center justify-center rounded-lg">
                           <div className="text-sm text-purple-200 bg-purple-900/80 px-3 py-1 rounded-full">
-                            Protection Preview
+                            Protection Applied
                           </div>
                         </div>
                       </div>
@@ -208,33 +181,11 @@ const DemoSection = forwardRef<HTMLDivElement>((props, ref) => {
                   <p className="text-gray-400 mb-6 max-w-md mx-auto">
                     Your image has been successfully protected from AI recognition.
                   </p>
-                  <div className="grid grid-cols-2 gap-6 max-w-2xl mx-auto mb-6">
-                    <div>
-                      <p className="text-sm text-gray-400 mb-2">Original Image</p>
-                      <div className="bg-gray-800 rounded-lg overflow-hidden">
-                        <img 
-                          src={selectedImage}
-                          alt="Original" 
-                          className="w-full object-cover h-48"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-400 mb-2">Protected Image</p>
-                      <div className="bg-gray-800 rounded-lg overflow-hidden relative">
-                        <img 
-                          src={protectedImage}
-                          alt="Protected" 
-                          className="w-full object-cover h-48"
-                        />
-                        <div className="absolute inset-0 bg-green-500/10 flex items-center justify-center">
-                          <div className="text-sm text-green-200 bg-green-900/80 px-3 py-1 rounded-full">
-                            Protection Applied
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <img 
+                    src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                    alt="Protected Image" 
+                    className="max-w-xs mx-auto rounded-lg border-2 border-green-500 mb-6"
+                  />
                   <div className="flex justify-center space-x-4">
                     <Button>
                       Download Protected Image
@@ -243,7 +194,6 @@ const DemoSection = forwardRef<HTMLDivElement>((props, ref) => {
                       onClick={() => {
                         setStep(1);
                         setIsComplete(false);
-                        setProtectedImage('');
                       }}
                     >
                       Protect Another Image
@@ -253,6 +203,7 @@ const DemoSection = forwardRef<HTMLDivElement>((props, ref) => {
               )}
             </div>
 
+            {/* Navigation */}
             {!isProcessing && !isComplete && (
               <div className="flex justify-between mt-8 pt-6 border-t border-gray-800">
                 <Button 
