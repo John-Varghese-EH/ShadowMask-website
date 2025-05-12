@@ -52,12 +52,6 @@ function Layout({ children }: { children: React.ReactNode }) {
               to="/download" 
               className="text-gray-300 hover:text-white transition-colors"
             >
-              Download
-            </Link>
-            <button 
-              onClick={() => scrollToSection(contactRef)} 
-              className="text-gray-300 hover:text-white transition-colors"
-            >
               Contact
             </button>
             <Link 
