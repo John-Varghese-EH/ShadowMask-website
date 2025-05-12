@@ -1,12 +1,14 @@
 import React, { useState, useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Shield, Upload, Image as ImageIcon, Download, Coffee, Github, Code, ArrowRight } from 'lucide-react';
 import Hero from './components/Hero';
 import FeatureCard from './components/FeatureCard';
 import Footer from './components/Footer';
 import DemoSection from './components/DemoSection';
+import CreatorPage from './components/CreatorPage';
 import Button from './components/Button';
 
-function App() {
+function Layout({ children }: { children: React.ReactNode }) {
   const featuresRef = useRef<HTMLDivElement>(null);
   const demoRef = useRef<HTMLDivElement>(null);
 
@@ -19,10 +21,10 @@ function App() {
       {/* Navigation */}
       <header className="fixed w-full bg-gray-900/80 backdrop-blur-md z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2">
             <Shield className="h-8 w-8 text-purple-500" />
             <span className="font-bold text-xl">ShadowMask</span>
-          </div>
+          </Link>
           <nav className="hidden md:flex space-x-8 text-sm">
             <button 
               onClick={() => scrollToSection(featuresRef)} 
@@ -36,8 +38,14 @@ function App() {
             >
               Demo
             </button>
+            <Link 
+              to="/creator" 
+              className="text-gray-300 hover:text-white transition-colors"
+            >
+              Creator
+            </Link>
             <a 
-              href="https://github.com" 
+              href="https://github.com/John-Varghese-EH/ShadowMask" 
               target="_blank" 
               rel="noreferrer" 
               className="text-gray-300 hover:text-white transition-colors flex items-center gap-1"
@@ -58,10 +66,18 @@ function App() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <Hero />
+      {children}
+    </div>
+  );
+}
 
-      {/* Features Section */}
+function HomePage() {
+  const featuresRef = useRef<HTMLDivElement>(null);
+  const demoRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <>
+      <Hero />
       <section ref={featuresRef} className="py-24 bg-gray-900">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-4">Advanced Protection Features</h2>
@@ -110,10 +126,8 @@ function App() {
         </div>
       </section>
 
-      {/* Demo Section */}
       <DemoSection ref={demoRef} />
 
-      {/* CTA Section */}
       <section className="py-24 bg-gradient-to-r from-purple-900/50 to-teal-900/50">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-6">Your Face, Your Rules – Beyond AI's Reach ✨</h2>
@@ -137,9 +151,19 @@ function App() {
         </div>
       </section>
 
-      {/* Footer */}
       <Footer />
-    </div>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Layout><HomePage /></Layout>} />
+        <Route path="/creator" element={<Layout><CreatorPage /></Layout>} />
+      </Routes>
+    </Router>
   );
 }
 
