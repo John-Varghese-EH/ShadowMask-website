@@ -52,6 +52,12 @@ function Layout({ children }: { children: React.ReactNode }) {
               to="/download" 
               className="text-gray-300 hover:text-white transition-colors"
             >
+              Download
+            </Link>
+            <button 
+              onClick={() => scrollToSection(contactRef)} 
+              className="text-gray-300 hover:text-white transition-colors"
+            >
               Contact
             </button>
             <Link 
@@ -112,87 +118,4 @@ function HomePage() {
             
             <FeatureCard 
               icon={<Shield className="h-6 w-6 text-teal-500" />}
-              title="Adversarial Patterns"
-              description="Creates subtle, random cosmetic distortions targeting critical facial regions to confuse AI classifiers."
-            />
-            
-            <FeatureCard 
-              icon={<Code className="h-6 w-6 text-amber-500" />}
-              title="Encoder Attack"
-              description="Alters how AI models encode the image, making it undetectable to automated systems."
-            />
-            
-            <FeatureCard 
-              icon={<ArrowRight className="h-6 w-6 text-red-500" />}
-              title="Diffusion Attack"
-              description="Tricks generative AI so any attempted edits result in unrealistic or corrupted outputs."
-            />
-            
-            <FeatureCard 
-              icon={<Upload className="h-6 w-6 text-blue-500" />}
-              title="DMI Metadata"
-              description="Embeds special DMI-PROHIBITED metadata to signal AI scrapers not to use images for training."
-            />
-            
-            <FeatureCard 
-              icon={<Coffee className="h-6 w-6 text-green-500" />}
-              title="Cross-Platform"
-              description="Works seamlessly on Windows, macOS, Linux, and Android devices."
-            />
-          </div>
-        </div>
-      </section>
-
-      <DemoSection />
-
-      <section className="py-24 bg-gradient-to-r from-purple-900/50 to-teal-900/50">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">Your Face, Your Rules – Beyond AI's Reach ✨</h2>
-          <p className="text-gray-300 max-w-2xl mx-auto mb-8">
-            Take back control of your digital identity. Download ShadowMask today and protect your photos from unauthorized AI analysis.
-          </p>
-          <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <Link to="/download">
-              <Button size="lg">
-                Download for Windows
-                <Download className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link to="/download">
-              <Button size="lg" variant="secondary">
-                Download for macOS
-                <Download className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <a 
-              href="https://github.com/John-Varghese-EH/ShadowMask"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Button size="lg" variant="outline">
-                View on GitHub
-                <Github className="ml-2 h-5 w-5" />
-              </Button>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <ContactForm />
-    </>
-  );
-}
-
-function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Layout><HomePage /></Layout>} />
-        <Route path="/creator" element={<Layout><CreatorPage /></Layout>} />
-        <Route path="/download" element={<Layout><DownloadPage /></Layout>} />
-      </Routes>
-    </Router>
-  );
-}
-
-export default App;
+              title="Adversa
