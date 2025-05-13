@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Download, Github, Windows, Apple, Linux, Smartphone } from 'lucide-react';
+import { Download, Github, AppWindow as Windows, Apple, Link as Linux, Smartphone } from 'lucide-react';
 import Button from './Button';
 
 const DownloadPage = () => {
