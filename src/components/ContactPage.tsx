@@ -1,8 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Mail, Send } from 'lucide-react';
 import Button from './Button';
-import ReCAPTCHA from 'react-google-recaptcha';
-import emailjs from '@emailjs/browser';
 import { motion } from 'framer-motion';
 
 const ContactPage = () => {
@@ -14,8 +12,6 @@ const ContactPage = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
-  const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,30 +19,26 @@ const ContactPage = () => {
     setSubmitStatus('idle');
 
     try {
-      const token = await recaptchaRef.current?.executeAsync();
-      if (!token) {
-        throw new Error('CAPTCHA verification failed');
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send message');
       }
 
-      const result = await emailjs.sendForm(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
-        formRef.current!,
-        'YOUR_PUBLIC_KEY'
-      );
-
-      if (result.status === 200) {
-        setSubmitStatus('success');
-        setFormData({ name: '', email: '', subject: '', message: '' });
-      } else {
-        throw new Error('Failed to send email');
-      }
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (error) {
-      console.error('Error sending email:', error);
+      console.error('Error sending message:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
-      recaptchaRef.current?.reset();
     }
   };
 
@@ -91,7 +83,7 @@ const ContactPage = () => {
             </motion.div>
           )}
 
-          <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
                 Name
@@ -147,12 +139,6 @@ const ContactPage = () => {
                 required
               ></textarea>
             </div>
-            
-            <ReCAPTCHA
-              ref={recaptchaRef}
-              size="invisible"
-              sitekey="YOUR_RECAPTCHA_SITE_KEY"
-            />
 
             <Button 
               type="submit" 
