@@ -143,7 +143,18 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500 text-sm">
-          <p>© 2025 ShadowMask. All rights reserved.</p>
+          <p className="mb-2">© 2025 ShadowMask. All rights reserved.</p>
+          <p>
+            Made with ❤️ by{' '}
+            <a 
+              href="https://github.com/John-Varghese-EH" 
+              target="_blank" 
+              rel="noreferrer" 
+              className="text-purple-400 hover:text-purple-300 transition-colors"
+            >
+              John Varghese (J0X)
+            </a>
+          </p>
         </div>
       </div>
     </footer>
